@@ -1,48 +1,55 @@
-import { Component } from 'react';
-
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import "./App.css";
+import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
   constructor() {
-    console.log('1');
     super();
-    
+
     this.state = {
-      monsters : [],
-    }
+      monsters: [],
+      searchField: "",
+    };
   }
 
   componentDidMount() {
-    console.log('3');
-    fetch('https://jsonplaceholder.typicode.com/users')
+    fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
-      .then((users) => 
+      .then((users) =>
         this.setState(
           () => {
             return { monsters: users };
           },
           () => {
-            console.log( this.state ); // figure out why it is consoled twice
+            console.log(this.state);
           }
         )
       );
   }
 
+  onSearchChange = (event) => {
+    const searchField = event.target.value.toLowerCase();
+    this.setState(() => {
+      return { searchField };
+    });
+  };
+
   render() {
-    console.log('2');
+    const { monsters, searchField } = this.state;
+    const { onSearchChange } = this;
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchField);
+    });
+
     return (
       <div className="App">
-        { this.state.monsters.map((monster) => {
-            return (
-              <h1 key={monster.id}> {monster.name} </h1>
-            );
-          })
-        };
+        <h1 className="app-title">Monsters Rolodex</h1>
+        <SearchBox onSearchChangeHandler={onSearchChange} />
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
 }
-
 
 export default App;
