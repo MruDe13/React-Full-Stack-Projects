@@ -1,5 +1,3 @@
-import { Component } from "react";
-
 const SearchBox = ({ onSearchChangeHandler }) => {
   return (
     <input
