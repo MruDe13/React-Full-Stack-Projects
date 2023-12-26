@@ -1,10 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import FormInput from "../form-input/form.input.component";
 import Button from "../button/button.component";
 import "./sign-in-form.styles.scss";
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 
@@ -29,18 +28,13 @@ const SignInForm = () => {
   };
 
   const logGoogleUser = async () => {
-    const { user } = await signInWithGooglePopup();
-    const userDocRef = await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
     try {
-      const { user } = await signInAuthUserWithEmailAndPassword(
-        userEmail,
-        userPassword
-      );
-      console.log(user);
+      await signInAuthUserWithEmailAndPassword(userEmail, userPassword);
     } catch (error) {
       switch (error.code) {
         case "auth/invalid-credential":
