@@ -18,7 +18,6 @@ export const UserContextProvider = ({ children }) => {
         createUserDocumentFromAuth(user);
       }
       setUserProfile(user);
-      console.log(user);
     });
     return unsubscribe;
   }, []);
